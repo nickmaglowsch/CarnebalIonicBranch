@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons left>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+        </ion-buttons>
+    <ion-title>Nova Comanda</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content margin-top>
+
+    <ion-list>
+
+        <ion-item>
+          <ion-label stacked>Numero da Comanda</ion-label>
+          <ion-input type="number" [(ngModel)]="numComanda"></ion-input>
+        </ion-item>
+      
+        <ion-item>
+          <ion-label stacked>Numero da Mesa</ion-label>
+          <ion-input type="number" [(ngModel)]="numMesa"></ion-input>
+        </ion-item>
+        <ion-item>
+          <button color="secondary" ion-button block (click)="createComanda()" padding>Criar</button>
+        </ion-item>
+      </ion-list>
+
+</ion-content>
