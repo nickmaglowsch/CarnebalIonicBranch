@@ -1,12 +1,9 @@
+import { MyApp } from './../../app/app.component';
+
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the CardapioPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -14,12 +11,36 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'cardapio.html',
 })
 export class CardapioPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  items:any;
+  static  originalList:any;
+  url:string;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
+    
+    this.url = MyApp.URL;
+    this.http.get(MyApp.URL+"getProducts.php")
+      .subscribe(result => {
+        this.items = result; 
+        CardapioPage.originalList = result;
+      })
+  
+  }
+  
+  initializeItems(): any {
+    this.items = CardapioPage.originalList;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CardapioPage');
-  }
+  searchProduct(ev: any) {
+    // Reset items back to all of the items
+    this.initializeItems();
 
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.items = this.items.filter((item) => {
+        return (item.nomeProduto.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+  }
 }

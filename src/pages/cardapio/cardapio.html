@@ -13,8 +13,16 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+<ion-searchbar (ionInput)="searchProduct($event)" placeholder="Pesquise Produtos..."></ion-searchbar>
 <ion-list>
-  
+    <ion-item *ngFor="let i of items">
+      <ion-thumbnail item-left> 
+          <img [src]="url + i.foto" > 
+      </ion-thumbnail>
+        <h2 > {{i.nomeProduto}}</h2> 
+        <p> {{i.descricao}}</p>  
+      <p item-right> $ {{i.precoUnitario}}</p>
+    </ion-item>
 </ion-list>
 </ion-content>

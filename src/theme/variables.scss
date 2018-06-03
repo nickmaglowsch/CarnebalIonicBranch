@@ -42,6 +42,11 @@ $colors: (
   carrot:     #f39c12,
   blue:       #3498db
 );
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 
 // App iOS Variables

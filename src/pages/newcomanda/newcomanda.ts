@@ -1,12 +1,8 @@
+import { MyApp } from './../../app/app.component';
+import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the NewcomandaPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -15,19 +11,44 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class NewcomandaPage {
 
-  numComanda: number;
-  numMesa:number;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  numComanda: string;
+  numMesa:string;
+  idComanda:any;
+  data:Observable<any>;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient,public alertCtrl: AlertController) {
+    this.numComanda ='';
+    this.numComanda = '';
   }
 
   createComanda(){
-    console.log(this.numComanda);
-    console.log(this.numMesa);
-    if (this.numComanda > 0 && this.numMesa > 0)
-    this.navCtrl.setRoot("ComandaPage");
+    let alert = this.alertCtrl.create({
+      title: 'A Comanda já está em uso',
+      subTitle: 'Por favor verifique nas Comandas Abertas',
+      buttons: ['OK']
+    });
+    if (this.numComanda != "" && this.numMesa != ""){
+      let comandaData = new FormData();
+      comandaData.append("numComandaFisica",this.numComanda);
+      comandaData.append("numMesa",this.numMesa);
+      comandaData.append("cdFuncionario",MyApp.cdFuncionario);
+      console.log(MyApp.cdFuncionario);
+      this.http.post(MyApp.URL+'newComanda.php', comandaData)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          if (data !== 0){
+            this.idComanda = data;
+            this.navCtrl.setRoot('ComandaPage',{"idComanda" : this.idComanda});
+          }else{
+            alert.present();
+          }
+        });
+    }else{
+      alert.setTitle("Numero da mesa ou Comanda incorretos");
+      alert.setSubTitle("Por favor verifique como preencheu os campos")
+      alert.present();
+    }
   }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NewcomandaPage');
-  }
+ 
   
 }
