@@ -20,6 +20,7 @@ export class CardapioPage {
     this.http.get(MyApp.URL+"getProducts.php")
       .subscribe(result => {
         this.items = result; 
+        console.log(result);
         CardapioPage.originalList = result;
       })
   

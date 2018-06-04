@@ -8,7 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 })
 export class MyApp {
   rootPage:any = 'LoginPage';
-  public static URL:string = "http://localhost/carnebalApp/";
+  public static URL:string = "http://192.168.1.100/carnebalApp/";
   public static cdFuncionario:string;
   public static foto:string;
   public static nome:string;

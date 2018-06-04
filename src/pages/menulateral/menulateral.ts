@@ -30,7 +30,7 @@ export class MenulateralPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.foto = MyApp.URL + MyApp.foto;
-    this.nome = MyApp.foto;
+    this.nome = MyApp.nome;
   }
 
   openPage(p){

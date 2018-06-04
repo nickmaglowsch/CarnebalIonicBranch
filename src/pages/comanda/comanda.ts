@@ -40,16 +40,16 @@ export class ComandaPage {
     })
     for (const item of this.itemsSent) {
       item.cdComanda = this.idComanda;
-      console.log(item);
     }
     console.log(this.itemsSent);
     this.http.post(MyApp.URL+'addItems.php', this.itemsSent)
       .subscribe(
         (data) => {
           if (data != 0){
-            this.navCtrl.setRoot('MenulateralPage');
+            this.navCtrl.setRoot('NewcomandaPage');
           }
         });
+    this.itemsSent = null;
   }
 
 

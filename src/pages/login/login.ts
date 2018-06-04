@@ -15,8 +15,9 @@ export class LoginPage {
   cpf: string = "";
   senha: string = "";
   data: Observable<any>;
-  URLlogin: string ="url/login.php";
+  urlLogo:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public http:HttpClient ,public alertCtrl: AlertController) {
+    this.urlLogo = MyApp.URL + "Untitled-1.png";
   }
 
   doLogin(){
