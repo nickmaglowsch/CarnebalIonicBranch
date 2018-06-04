@@ -22,6 +22,11 @@ export class ComandaPage {
     this.url = MyApp.URL;
   }
 
+  ionViewWillEnter(){
+    if (MyApp.cdFuncionario == undefined){
+      this.navCtrl.setRoot('LoginPage');
+    }
+  }
 
 
   addQty(i){

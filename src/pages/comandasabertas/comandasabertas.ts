@@ -11,13 +11,22 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 export class ComandasabertasPage {
   comandas:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient,private alertCtrl: AlertController) {
-    this.http.get(MyApp.URL+"getComandasAbertas.php")
-      .subscribe(result => {
-        this.comandas = result; 
-      })
+    
+  }
+  
+
+  ionViewWillEnter(){
+    if (MyApp.cdFuncionario == undefined){
+      this.navCtrl.setRoot('LoginPage');
+    }else{
+      this.http.get(MyApp.URL+"getComandasAbertas.php")
+        .subscribe(result => {
+          this.comandas = result; 
+        });
+    }
   }
 
-  confirm(cdComanda) {
+  confirm(c) {
     let alert = this.alertCtrl.create({
       title: 'Fechar Comanda?',
       message: 'Você está fechando a comanda, logo so poderá registrar outros pedidos para o cliente abrindo outra',
@@ -31,15 +40,24 @@ export class ComandasabertasPage {
         {
           text: 'OK',
           handler: () => {
-            console.log('Buy clicked');
+            console.log(c);
+            this.http.post(MyApp.URL + "closeComanda.php",c)
+            .subscribe(
+              data => {
+                if (data == 1){
+                  this.comandas.splice(this.comandas.indexOf(c.cdComanda), 1);
+                }
+              }
+            );
           }
         }
       ]
     });
     alert.present();
   }
-  edit(){
 
+  edit(c){
+    this.navCtrl.setRoot('ComandaPage',{"idComanda" : c.cdComanda});
   }
   
 

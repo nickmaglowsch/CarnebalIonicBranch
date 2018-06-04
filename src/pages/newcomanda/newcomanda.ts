@@ -19,6 +19,11 @@ export class NewcomandaPage {
     this.numComanda ='';
     this.numComanda = '';
   }
+  ionViewWillEnter(){
+    if (MyApp.cdFuncionario == undefined){
+      this.navCtrl.setRoot('LoginPage');
+    }
+  }
 
   createComanda(){
     let alert = this.alertCtrl.create({

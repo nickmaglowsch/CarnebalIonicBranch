@@ -45,7 +45,6 @@ export class LoginPage {
           }
         });
       } else {
-        
         alert.present();
       }
   }

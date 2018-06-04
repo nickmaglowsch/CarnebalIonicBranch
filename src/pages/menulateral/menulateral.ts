@@ -32,6 +32,11 @@ export class MenulateralPage {
     this.foto = MyApp.URL + MyApp.foto;
     this.nome = MyApp.nome;
   }
+  ionViewWillEnter(){
+    if (MyApp.cdFuncionario == undefined){
+      this.navCtrl.setRoot('LoginPage');
+    }
+  }
 
   openPage(p){
 

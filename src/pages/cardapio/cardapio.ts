@@ -25,6 +25,11 @@ export class CardapioPage {
       })
   
   }
+  ionViewWillEnter(){
+    if (MyApp.cdFuncionario == undefined){
+      this.navCtrl.setRoot('LoginPage');
+    }
+  }
   
   initializeItems(): any {
     this.items = CardapioPage.originalList;
