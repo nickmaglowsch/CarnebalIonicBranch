@@ -37,6 +37,7 @@ export class NewcomandaPage {
       comandaData.append("numMesa",this.numMesa);
       comandaData.append("cdFuncionario",MyApp.cdFuncionario);
       console.log(MyApp.cdFuncionario);
+      console.log(comandaData.get("numComandaFisica"));
       this.http.post(MyApp.URL+'newComanda.php', comandaData)
       .subscribe(
         (data) => {
