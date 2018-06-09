@@ -1,3 +1,6 @@
+import { AuthProvider } from './../../providers/auth/auth';
+import { User } from './../../providers/auth/user';
+import { AlertBuilderProvider } from './../../providers/alert-builder/alert-builder';
 import { MyApp } from './../../app/app.component';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
@@ -12,50 +15,47 @@ import { HttpClient } from '@angular/common/http';
 
 @IonicPage()
 @Component({
-  selector: 'page-first-login',
-  templateUrl: 'first-login.html',
+    selector: 'page-first-login',
+    templateUrl: 'first-login.html',
 })
 export class FirstLoginPage {
-  cpf:string ="";
-  senha:string="";
-  senhaConfirma:string="";
-  show:boolean=false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http:HttpClient, public alertCtrl: AlertController) {
-  }
+    cpf: string = "";
+    senha: string = "";
+    senhaConfirma: string = "";
+    show: boolean = false;
+    user: User;
+    alert: AlertBuilderProvider;
+    constructor(private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController) {
+        this.alert = new AlertBuilderProvider(this.alertCtrl, 'Senha ou CPF incorretos', 'Por favor digite seu cpf e sua senha para logar, ou fale com o ADMIN!');
+    }
 
-  
-  doUpdateSenha(){
-    
-    let alert = this.alertCtrl.create({
-      title: 'Senha ou CPF Invalidos',
-      subTitle: 'Por favor digite seu cpf e sua senha para logar, ou fale com o ADMIN!',
-      buttons: ['OK']
-    });
-      if (this.cpf.length > 0 && this.senha.length > 0){
-        let loginData = new FormData();
-        loginData.append('cpf',this.cpf);
-        loginData.append('senha',this.senha);
-        this.http.post(MyApp.URL+'firstLogin.php', loginData)
-        .subscribe(
-        data => {
-          console.log(data);
-          if (data !== 0){
-            MyApp.cdFuncionario = data[0].cdFuncionario;
-            MyApp.foto = data[0].foto;
-            MyApp.nome = data[0].nomeFuncionario;
-            console.log(MyApp.cdFuncionario);
-            this.navCtrl.setRoot('MenulateralPage');
-            
-          }else{
-            alert.present();
-          }
-        });
-      } else {
-        alert.present();
-      }
 
-  }
+    doUpdateSenha() {
+        if (this.verificarCampos) {
+            this.auth.login(this.cpf, this.senha).subscribe(
+                data => {
+                    this.user = null;
+                    if (data !== 0) {
+                        this.navCtrl.setRoot('MenulateralPage');
+                    } else {
+                        this.alert.newAlert().present();
+                    }
+                });
+        }
+    }
 
-  
+    verificarCampos(): boolean {
+        if ((this.cpf.length > 0 && this.senha.length > 0 && this.senhaConfirma.length > 0)
+            && (this.senha.length == this.senhaConfirma.length)) {
+            this.alert.changeTitle("Senha ou CPF incorretos");
+            this.alert.changeSubTitle("Por favor digite seu cpf e sua senha para logar, ou fale com o ADMIN!");
+            return true;
+        } else {
+            this.alert.changeTitle("A senha e a sua confirmação não estão iguais");
+            this.alert.changeSubTitle("A senha e a sua confirmação devem ser iguais!");
+            return false;
+        }
+    }
+
 
 }

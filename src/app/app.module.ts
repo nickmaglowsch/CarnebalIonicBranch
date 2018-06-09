@@ -6,6 +6,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Camera } from '@ionic-native/camera';
 import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http'
+import { AuthProvider } from '../providers/auth/auth';
+import { AlertBuilderProvider } from '../providers/alert-builder/alert-builder';
+import { ProductProvider } from '../providers/product/product';
+import { ComandaBuilderProvider } from '../providers/comanda-builder/comanda-builder';
 @NgModule({
   declarations: [
     MyApp
@@ -23,7 +27,11 @@ import { HttpClientModule } from '@angular/common/http'
     StatusBar,
     SplashScreen,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthProvider,
+    AlertBuilderProvider,
+    ProductProvider,
+    ComandaBuilderProvider
   ]
 })
 export class AppModule {}
