@@ -2,7 +2,7 @@ import { MyApp } from './../../app/app.component';
 import { HttpClient } from '@angular/common/http';
 import { CardapioPage } from './../cardapio/cardapio';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 
 @IonicPage()
@@ -11,21 +11,40 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'comanda.html',
 })
 export class ComandaPage {
-  items:any;
+  lastPage: string;
+  items:any = new Array;
   itemsSent:any;
   url:string;
+  show:boolean;
   idComanda:any;
   quantidade:number = 0;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
-    this.items= CardapioPage.originalList;
+  constructor(public events: Events, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
     this.idComanda = navParams.get('idComanda');
     this.url = MyApp.URL;
+    this.lastPage = this.navCtrl.last().id ;
   }
 
   ionViewWillEnter(){
     if (MyApp.cdFuncionario == undefined){
       this.navCtrl.setRoot('LoginPage');
+    } 
+    if (this.lastPage == 'ComandasabertasPage') {
+      this.show = true;
+      this.http.get(MyApp.URL+ 'getProducts.php?id='+this.idComanda)
+      .subscribe(
+        result => {
+          this.items = result;
+        }
+      )
+    } 
+    if (this.lastPage == 'NewcomandaPage'){
+      this.items= CardapioPage.originalList;
+      this.show = false;
     }
+  }
+
+  ionViewDidEnter(){
+    
   }
 
 
@@ -39,7 +58,6 @@ export class ComandaPage {
   }
 
   sendComanda(){
-    console.log("botao");
     this.itemsSent = this.items.filter((item) => {
       return (item.qtProduto > 0);
     })
@@ -51,13 +69,24 @@ export class ComandaPage {
       .subscribe(
         (data) => {
           if (data != 0){
-            this.navCtrl.setRoot('NewcomandaPage');
+            this.navCtrl.pop();
           }
         });
     this.itemsSent = null;
+    this.items = null;
   }
 
 
+  abrirCardapio(e){
+    this.lastPage = "";
+    this.navCtrl.push('CardapioPage', {"items":this.items});
+    this.events.subscribe('Items:fera', (items) => {
+      for (const iterator of items) {
+        this.items.push(iterator);
+      }
+      
+    });
+  }
 
   initializeItems(): any {
     this.items = CardapioPage.originalList;

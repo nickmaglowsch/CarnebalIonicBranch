@@ -14,6 +14,7 @@ export class TabsPage {
   myIndex: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.myIndex = navParams.data.tabIndex  || 0; 
   }
 
 }

@@ -39,7 +39,11 @@ export class LoginPage {
             MyApp.foto = data[0].foto;
             MyApp.nome = data[0].nomeFuncionario;
             console.log(MyApp.cdFuncionario);
-            this.navCtrl.setRoot('MenulateralPage');
+            if (data[0].primeiroLogin == 1){
+              this.navCtrl.setRoot('FirstLoginPage');
+            }else {
+              this.navCtrl.setRoot('MenulateralPage');
+            }
           }else{
             alert.present();
           }
@@ -47,6 +51,7 @@ export class LoginPage {
       } else {
         alert.present();
       }
+      
   }
 
 }

@@ -1,0 +1,20 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>profile</ion-title>
+    <ion-buttons ion-button end>
+        <button ion-button solid icon-end color="secondary" (click)="uploadImage()"> Salvar <ion-icon name="md-checkbox"></ion-icon></button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <img class="center edit" style="border-radius: 20px" src="{{ this.image }}" width="95%" >
+  <ion-list no-lines>
+    <button ion-buton ion-item (click)="editPhoto()" > <div style="text-align: center"><strong>Mudar Foto</strong> </div><ion-icon name="md-create" item-end></ion-icon> </button>
+    <ion-item><div style="float: left;" padding>Nome:</div><div style="margin-left: 5px;" padding>{{ this.nome }}</div></ion-item>
+  </ion-list>
+
+</ion-content>

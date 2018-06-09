@@ -10,6 +10,8 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 })
 export class ComandasabertasPage {
   comandas:any;
+  searchedComandas:any;
+  orderBy:string = "comanda";
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient,private alertCtrl: AlertController) {
     
   }
@@ -22,6 +24,7 @@ export class ComandasabertasPage {
       this.http.get(MyApp.URL+"getComandasAbertas.php")
         .subscribe(result => {
           this.comandas = result; 
+          this.searchedComandas = result;
         });
     }
   }
@@ -45,7 +48,9 @@ export class ComandasabertasPage {
             .subscribe(
               data => {
                 if (data == 1){
-                  this.comandas.splice(this.comandas.indexOf(c.cdComanda), 1);
+                  console.log("excluindo comanda " + c);
+                  console.log(this.comandas.map(function(e) { return e.cdComanda; }).indexOf(c.cdComanda));
+                  this.comandas.splice(this.comandas.map(function(e) { return e.cdComanda; }).indexOf(c.cdComanda), 1);
                 }
               }
             );
@@ -57,8 +62,45 @@ export class ComandasabertasPage {
   }
 
   edit(c){
-    this.navCtrl.setRoot('ComandaPage',{"idComanda" : c.cdComanda});
+    this.navCtrl.push('ComandaPage',{"idComanda" : c.cdComanda, "from":"ComandaAberta"});
   }
   
+  private initializeItems(){
+    if (this.orderBy== 'comanda') {
+      this.comandas = this.searchedComandas.sort(function(a,b) {return (Number(a.numComandaFisica) > Number(b.numComandaFisica)) ? 1 : ((Number(b.numComandaFisica) > Number(a.numComandaFisica)) ? -1 : 0);} );
+    } else {
+      this.comandas = this.searchedComandas.sort(function(a,b) {return (a.numMesa > b.numMesa) ? 1 : ((b.numMesa > a.numMesa) ? -1 : 0);} );
+    }
+  }
 
+  searchComanda(ev: any) {
+    // Reset items back to all of the items
+    this.initializeItems();
+
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (this.orderBy== 'comanda') {
+      if (val && val.trim() != '') {
+        this.comandas = this.comandas.filter((comanda) => {
+          return (comanda.numComandaFisica.indexOf(val) > -1);
+        })
+      }
+    } else {
+      if (val && val.trim() != '') {
+        this.comandas = this.comandas.filter((comanda) => {
+          return (comanda.numMesa.indexOf(val) > -1);
+        })
+      }
+    }
+  }
+
+  orderList(){
+    if (this.orderBy== 'comanda') {
+      this.comandas = this.comandas.sort(function(a,b) {return (Number(a.numComandaFisica) > Number(b.numComandaFisica)) ? 1 : ((Number(b.numComandaFisica) > Number(a.numComandaFisica)) ? -1 : 0);} );
+    } else {
+      this.comandas = this.comandas.sort(function(a,b) {return (a.numMesa > b.numMesa) ? 1 : ((b.numMesa > a.numMesa) ? -1 : 0);} );
+    }
+  }
 }

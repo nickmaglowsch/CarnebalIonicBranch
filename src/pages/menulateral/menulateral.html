@@ -1,16 +1,19 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-navbar>
-      <ion-title style="text-align: center"><img margin-right width="40" height="40" src="http://localhost/Untitled-1.png"><div margin-botton>CarnebalApp</div> </ion-title>
+      <ion-title style="margin-bottom: -10px; margin-left: 55px" ><img   width="40" height="40" src="assets/imgs/icon.png" style="float: left; margin-bottom: 10px; margin-right: 9px"><div style="text-align: left; margin-top: 8px" >CarnebalApp</div> </ion-title>
     </ion-navbar>
   </ion-header>
   
   <ion-content margin-top>
     <img src="{{ foto }}" height="75" width="75" class="center" style="border-radius: 25%;"> 
       <h1 style="text-align: center">{{nome}}</h1>
-    <ion-list>
-        <button ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">
-          <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+    <ion-list no-lines>
+      <button ion-item (click)="editProfile()">
+        <ion-icon item-start [name]="contact"></ion-icon> Perfil
+      </button>
+        <button no-lines ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">
+          <ion-icon item-start [name]="p.icon"></ion-icon>
           {{ p.title }}
         </button>
         <button ion-item  (click)="logout()" >

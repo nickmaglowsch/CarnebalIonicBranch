@@ -14,15 +14,27 @@
     <ion-title>Comandas Abertas</ion-title>
   </ion-navbar>
 
+  <ion-toolbar no-border-top>
+      <ion-segment [(ngModel)]="orderBy" (ionChange)="orderList()">
+        <ion-segment-button value="mesa">
+          Mesa
+        </ion-segment-button>
+        <ion-segment-button value="comanda">
+          Comanda
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+
 </ion-header>
 
 
 <ion-content >
+  <ion-searchbar (ionInput)="searchComanda($event)" placeholder="Pesquise Produtos..."></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let c of comandas" >
-      <h1> Comanda: {{ c.numComandaFisica }}</h1>
-      <h2> Mesa: {{ c.numMesa }} </h2>
-      <p>horario de abertura: {{ c.hrComanda }}</p>
+      <h1> <b>Comanda:</b> {{ c.numComandaFisica }}</h1>
+      <h2> <b>Mesa:</b> {{ c.numMesa }} </h2>
+      <p>Horario de abertura: {{ c.hrComanda }}</p>
 
       <div item-right>
         <p><button ion-button item-right icon-start  style="width:85px;height:30px" color="danger" (click)="confirm(c)"><ion-icon name="md-cart"> Fechar</ion-icon></button></p>

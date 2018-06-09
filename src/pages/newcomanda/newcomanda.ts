@@ -23,6 +23,8 @@ export class NewcomandaPage {
     if (MyApp.cdFuncionario == undefined){
       this.navCtrl.setRoot('LoginPage');
     }
+    this.numComanda = '';
+    this.numMesa ='';
   }
 
   createComanda(){
@@ -44,7 +46,7 @@ export class NewcomandaPage {
           console.log(data);
           if (data !== 0){
             this.idComanda = data;
-            this.navCtrl.setRoot('ComandaPage',{"idComanda" : this.idComanda});
+            this.navCtrl.push('ComandaPage',{"idComanda" : this.idComanda});
           }else{
             alert.present();
           }

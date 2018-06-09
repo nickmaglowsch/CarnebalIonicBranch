@@ -2,7 +2,7 @@ import { MyApp } from './../../app/app.component';
 
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 
 @IonicPage()
@@ -12,22 +12,37 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CardapioPage {
   items:any;
+  show:boolean;
   static  originalList:any;
+  itemsSent:any = new Array;
   url:string;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
-    
+  itemsToRemove:any;
+  lastPage:any;
+
+  constructor(public events: Events,public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
     this.url = MyApp.URL;
-    this.http.get(MyApp.URL+"getProducts.php")
+    this.items = CardapioPage.originalList;
+    this.lastPage = this.navCtrl.last();
+  }
+
+  ionViewWillEnter(){
+    if (MyApp.cdFuncionario == undefined){
+      this.navCtrl.setRoot('LoginPage');
+    }
+    if (this.lastPage != undefined){
+      this.show = this.lastPage.id == 'ComandaPage';
+      if (this.show){
+        this.initializeItems();
+
+      }
+    }else{
+      this.http.get(MyApp.URL+"getProducts.php")
       .subscribe(result => {
         this.items = result; 
         console.log(result);
         CardapioPage.originalList = result;
+        this.items = CardapioPage.originalList;
       })
-  
-  }
-  ionViewWillEnter(){
-    if (MyApp.cdFuncionario == undefined){
-      this.navCtrl.setRoot('LoginPage');
     }
   }
   
@@ -48,5 +63,22 @@ export class CardapioPage {
         return (item.nomeProduto.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
+  }
+
+  addItem(e,i){
+    console.log(e._value);
+    if (e._value){
+      console.log(i);
+      this.itemsSent.push(i);
+      console.log(this.itemsSent);
+    }else {
+      this.itemsSent.splice(this.itemsSent.indexOf(i), 1);
+      console.log(this.itemsSent);
+    }
+  }
+
+  sendItems(){
+    this.events.publish('Items:fera', this.itemsSent);
+    this.navCtrl.pop();
   }
 }

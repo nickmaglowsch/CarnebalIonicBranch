@@ -27,4 +27,7 @@
           </div>
         </ion-item>
     </ion-list>
+    <ion-fab bottom right>
+      <button  [class.hide]="!show" ion-fab color="secondary" (tap)="abrirCardapio($event)"><ion-icon name="md-add" ></ion-icon></button>
+    </ion-fab>
 </ion-content>

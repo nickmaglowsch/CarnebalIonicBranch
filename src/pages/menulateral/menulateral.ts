@@ -18,35 +18,38 @@ export interface PageInterface {
 export class MenulateralPage {
   foto:string;
   nome:string;
-  rootPage = 'TabsPage'
+  rootPage = 'TabsPage';
 
   @ViewChild(Nav) nav:Nav;
 
   pages: PageInterface[] = [
     {title:'Cardapio', PageName: 'TabsPage', tabComponent: 'CardapioPage', index: 0, icon:'ios-cafe' },
     {title:'Nova Comanda', PageName: 'TabsPage', tabComponent: 'NewComandaPage', index: 1, icon:'md-add-circle' },
-    {title:'Comandas Abertas', PageName: 'TabsPage', tabComponent: 'ComandasAbertasPage', index: 3, icon:'ios-list-box' },
+    {title:'Comandas Abertas', PageName: 'TabsPage', tabComponent: 'ComandasAbertasPage', index: 2, icon:'ios-list-box' },
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.foto = MyApp.URL + MyApp.foto;
     this.nome = MyApp.nome;
   }
-  ionViewWillEnter(){
-    if (MyApp.cdFuncionario == undefined){
-      this.navCtrl.setRoot('LoginPage');
+
+  openPage(page:PageInterface){
+    let params = {};
+
+    if (page.index){
+      params = { tabIndex: page.index};
     }
-  }
-
-  openPage(p){
-
-  }
-
-  isActive(p){
-    
+    if (this.nav.getActiveChildNavs() && page.index != undefined){
+      this.nav.getActiveChildNavs()[0].select(page.index);
+    }else {
+      this.nav.setRoot(page.PageName, params);
+    }
   }
 
   logout(){
     this.navCtrl.setRoot('LoginPage');
+  }
+  editProfile(){
+    this.navCtrl.push('ProfilePage');
   }
 }
