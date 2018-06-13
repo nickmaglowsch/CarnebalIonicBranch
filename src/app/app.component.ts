@@ -11,6 +11,7 @@ export class MyApp {
   rootPage:any = 'LoginPage';
   public static URL:string = "https://carnebalapi-nickmaglowsch.c9users.io/";
   public static USER:User;
+  
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

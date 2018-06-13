@@ -1,3 +1,4 @@
+import { LoaderProvider } from './../../providers/loader/loader';
 import { AuthProvider } from './../../providers/auth/auth';
 import { MyApp } from './../../app/app.component';
 import { Observable } from 'rxjs/Observable';
@@ -16,7 +17,7 @@ export class NewcomandaPage {
     numMesa: string;
     idComanda: any;
     data: Observable<any>;
-    constructor(private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController) {
+    constructor(private loader:LoaderProvider,private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController) {
         this.numComanda = '';
         this.numComanda = '';
     }
@@ -29,12 +30,14 @@ export class NewcomandaPage {
     }
 
     createComanda() {
+        
         let alert = this.alertCtrl.create({
             title: 'A Comanda já está em uso',
             subTitle: 'Por favor verifique nas Comandas Abertas',
             buttons: ['OK']
         });
         if (this.numComanda != "" && this.numMesa != "") {
+            this.loader.showLoading("Criando...");
             let comandaData = new FormData();
             comandaData.append("numComandaFisica", this.numComanda);
             comandaData.append("numMesa", this.numMesa);
@@ -47,6 +50,7 @@ export class NewcomandaPage {
                             this.navCtrl.push('ComandaPage', { "idComanda": this.idComanda });
                         } else {
                             alert.present();
+                            this.loader.dismissLoading();
                         }
                     });
         } else {

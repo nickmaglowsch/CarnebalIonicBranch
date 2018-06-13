@@ -10,7 +10,7 @@
       <h1 style="text-align: center">{{nome}}</h1>
     <ion-list no-lines>
       <button ion-item (click)="editProfile()">
-        <ion-icon item-start [name]="contact"></ion-icon> Perfil
+        <ion-icon item-start name="contact"></ion-icon> Perfil
       </button>
         <button no-lines ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">
           <ion-icon item-start [name]="p.icon"></ion-icon>

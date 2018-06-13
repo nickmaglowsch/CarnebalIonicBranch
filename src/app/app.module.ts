@@ -9,7 +9,8 @@ import { HttpClientModule } from '@angular/common/http'
 import { AuthProvider } from '../providers/auth/auth';
 import { AlertBuilderProvider } from '../providers/alert-builder/alert-builder';
 import { ProductProvider } from '../providers/product/product';
-import { ComandaBuilderProvider } from '../providers/comanda-builder/comanda-builder';
+import { LoaderProvider } from '../providers/loader/loader';
+
 @NgModule({
   declarations: [
     MyApp
@@ -31,7 +32,7 @@ import { ComandaBuilderProvider } from '../providers/comanda-builder/comanda-bui
     AuthProvider,
     AlertBuilderProvider,
     ProductProvider,
-    ComandaBuilderProvider
+    LoaderProvider
   ]
 })
 export class AppModule {}

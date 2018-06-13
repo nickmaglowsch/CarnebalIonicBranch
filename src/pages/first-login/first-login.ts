@@ -1,3 +1,4 @@
+import { LoaderProvider } from './../../providers/loader/loader';
 import { AuthProvider } from './../../providers/auth/auth';
 import { User } from './../../providers/auth/user';
 import { AlertBuilderProvider } from './../../providers/alert-builder/alert-builder';
@@ -25,13 +26,15 @@ export class FirstLoginPage {
     show: boolean = false;
     user: User;
     alert: AlertBuilderProvider;
-    constructor(private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController) {
+    constructor(private loader:LoaderProvider,private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController) {
         this.alert = new AlertBuilderProvider(this.alertCtrl, 'Senha ou CPF incorretos', 'Por favor digite seu cpf e sua senha para logar, ou fale com o ADMIN!');
     }
 
 
     doUpdateSenha() {
+        this.loader.showLoading("Entrando...");
         if (this.verificarCampos) {
+            
             this.auth.login(this.cpf, this.senha).subscribe(
                 data => {
                     this.user = null;
