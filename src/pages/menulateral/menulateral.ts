@@ -31,7 +31,7 @@ export class MenulateralPage {
 
 	constructor(private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams) {
 		if (this.auth.getUserInfo() != null) {
-			this.foto = MyApp.URL + this.auth.getUserInfo().foto;
+			this.foto = this.auth.getUserInfo().foto;
 			this.nome = this.auth.getUserInfo().nome;
 		} else {
 			this.foto = '';

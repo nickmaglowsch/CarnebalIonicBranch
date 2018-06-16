@@ -25,6 +25,7 @@ export class ComandasabertasPage {
         } else {
             this.http.get(MyApp.URL + "getComandasAbertas.php")
                 .subscribe(result => {
+                    console.log(result);
                     this.comandas = result;
                     this.searchedComandas = result;
                 });

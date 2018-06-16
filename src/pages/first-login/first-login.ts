@@ -2,7 +2,6 @@ import { LoaderProvider } from './../../providers/loader/loader';
 import { AuthProvider } from './../../providers/auth/auth';
 import { User } from './../../providers/auth/user';
 import { AlertBuilderProvider } from './../../providers/alert-builder/alert-builder';
-import { MyApp } from './../../app/app.component';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';

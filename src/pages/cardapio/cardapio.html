@@ -23,7 +23,7 @@
         <ion-label>
         <ion-checkbox color="dark" checked="false" (ionChange)="addItem($event,i)"></ion-checkbox>
       <ion-thumbnail style="float: left;" padding> 
-          <img [src]="url + i.foto" > 
+          <img [src]="i.foto" > 
       </ion-thumbnail>
       <div padding>
           <h1 > {{i.nomeProduto}}</h1> 

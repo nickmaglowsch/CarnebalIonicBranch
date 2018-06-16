@@ -1,7 +1,6 @@
 import { LoaderProvider } from './../../providers/loader/loader';
 import { ProductProvider } from './../../providers/product/product';
 import { AuthProvider } from './../../providers/auth/auth';
-import { MyApp } from './../../app/app.component';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
@@ -16,13 +15,11 @@ export class ComandaPage {
     lastPage: string;
     items: any = new Array;
     itemsSent: any;
-    url: string;
     show: boolean;
     idComanda: any;
     quantidade: number = 0;
     constructor(private auth: AuthProvider, public events: Events, public navCtrl: NavController, public navParams: NavParams, public product: ProductProvider, private loader:LoaderProvider) {
         this.idComanda = navParams.get('idComanda');
-        this.url = MyApp.URL;
         this.lastPage = this.navCtrl.last().id;
     }
 

@@ -1,3 +1,4 @@
+import { AuthProvider } from './../../providers/auth/auth';
 import { MyApp } from './../../app/app.component';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -11,11 +12,12 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
     templateUrl: 'profile.html',
 })
 export class ProfilePage {
-    nome: string = MyApp.USER.nome;
-    image: string = MyApp.URL + MyApp.USER.foto;
+    nome: string = this.auth.getUserInfo().nome;
+
+    image: string = this.auth.getUserInfo().foto;
     base64Image: any;
 
-    constructor(private actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public http: HttpClient) {
+    constructor(private auth:AuthProvider ,private actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public http: HttpClient) {
     }
 
     editPhoto() {
