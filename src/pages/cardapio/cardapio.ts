@@ -13,7 +13,7 @@ import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 export class CardapioPage {
     items: any;
     show: boolean;
-    itemsSent: any = new Array;
+    itemsSent: any;
     url: string;
     lastPage: any;
 
@@ -21,6 +21,7 @@ export class CardapioPage {
         this.url = MyApp.URL;
         this.lastPage = this.navCtrl.last();
         this.initializeItems();
+        this.itemsSent = new Array();
     }
 
     ionViewWillEnter() {
@@ -30,7 +31,9 @@ export class CardapioPage {
         if (this.lastPage != undefined)
             this.show = this.lastPage.id == 'ComandaPage';
     }
-
+    ionViewWillLeave(){
+        this.itemsSent.splice(0,this.itemsSent.length);
+    }
     initializeItems(): any {
         this.productProvider.getProducts("").subscribe(data => { this.items = data });
     }

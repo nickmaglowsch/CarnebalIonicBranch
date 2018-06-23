@@ -25,25 +25,34 @@ export class FirstLoginPage {
     show: boolean = false;
     user: User;
     alert: AlertBuilderProvider;
-    constructor(private loader:LoaderProvider,private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController) {
+    constructor(private loader: LoaderProvider, private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController) {
         this.alert = new AlertBuilderProvider(this.alertCtrl, 'Senha ou CPF incorretos', 'Por favor digite seu cpf e sua senha para logar, ou fale com o ADMIN!');
     }
 
 
     doUpdateSenha() {
         this.loader.showLoading("Entrando...");
-        if (this.verificarCampos) {
-            
-            this.auth.login(this.cpf, this.senha).subscribe(
-                data => {
-                    this.user = null;
-                    if (data !== 0) {
-                        this.navCtrl.setRoot('MenulateralPage');
-                    } else {
-                        this.alert.newAlert().present();
-                    }
-                });
+        if (this.forcaPass) {
+            if (this.verificarCampos) {
+
+                this.auth.firstLogin(this.cpf, this.senha).subscribe(
+                    data => {
+                        this.user = null;
+                        if (data !== 0) {
+                            this.navCtrl.setRoot('MenulateralPage');
+                        } else {
+                            this.alert.newAlert().present();
+                            this.loader.dismissLoading();
+                        }
+                    });
+            }
+        } else {
+            this.alert.changeTitle("A senha Fraca");
+            this.alert.changeSubTitle("A senha deve ter 8 caracters incluindo numeros caixa alta baixa e especiais");
+            this.alert.newAlert().present();
+            this.loader.dismissLoading();
         }
+
     }
 
     verificarCampos(): boolean {
@@ -51,12 +60,18 @@ export class FirstLoginPage {
             && (this.senha.length == this.senhaConfirma.length)) {
             this.alert.changeTitle("Senha ou CPF incorretos");
             this.alert.changeSubTitle("Por favor digite seu cpf e sua senha para logar, ou fale com o ADMIN!");
+            this.loader.dismissLoading();
             return true;
         } else {
             this.alert.changeTitle("A senha e a sua confirmação não estão iguais");
             this.alert.changeSubTitle("A senha e a sua confirmação devem ser iguais!");
+            this.loader.dismissLoading();
             return false;
         }
+    }
+
+    forcaPass(): boolean {
+        return new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})").test(this.senha);
     }
 
 

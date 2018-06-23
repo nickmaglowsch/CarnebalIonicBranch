@@ -1,7 +1,6 @@
 import { LoaderProvider } from './../../providers/loader/loader';
 import { ProductProvider } from './../../providers/product/product';
 import { AuthProvider } from './../../providers/auth/auth';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
@@ -13,13 +12,15 @@ import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 })
 export class ComandaPage {
     lastPage: string;
-    items: any = new Array;
+    items: any;
     itemsSent: any;
     show: boolean;
     idComanda: any;
-    quantidade: number = 0;
+    quantidade: number;
     constructor(private auth: AuthProvider, public events: Events, public navCtrl: NavController, public navParams: NavParams, public product: ProductProvider, private loader:LoaderProvider) {
         this.idComanda = navParams.get('idComanda');
+        this.items = new Array();
+        this.itemsSent = new Array();
         this.lastPage = this.navCtrl.last().id;
     }
 
@@ -32,10 +33,16 @@ export class ComandaPage {
             this.product.getProducts(this.idComanda).subscribe(result => { this.items = result; });
         }
         if (this.lastPage == 'NewcomandaPage') {
-            this.product.getProducts("").subscribe(result => { });
-            this.items = this.product.getList();
+            this.product.getProducts("").subscribe(result => { 
+                this.items = this.product.getList();
+            });
             this.show = false;
         }
+    }
+
+    ionViewWillLeave(){
+        this.itemsSent.splice(0,this.itemsSent.length);
+        this.items.splice(0,this.items.length);
     }
 
     addQty(i) {
@@ -50,7 +57,8 @@ export class ComandaPage {
     sendComanda() {
         this.loader.showLoading("Registrando Comanda...");
         this.itemsSent = this.items.filter((item) => {
-            return (item.qtProduto > 0);
+            let quantidade = Number(item.qtProduto);
+            return (quantidade > 0);
         })
         for (const item of this.itemsSent) {
             item.cdComanda = this.idComanda;
@@ -58,8 +66,6 @@ export class ComandaPage {
         this.product.addProduct(this.itemsSent).subscribe(result => {
             this.navCtrl.pop();
         });
-        this.itemsSent = null;
-        this.items = null;
     }
 
 
@@ -67,6 +73,11 @@ export class ComandaPage {
         this.lastPage = "";
         this.navCtrl.push('CardapioPage', { "items": this.items });
         this.events.subscribe('Items:fera', (items) => {
+            this.product.getProducts(this.idComanda).subscribe(result => { 
+                for (const results of result) {
+                    this.items.push(results);
+                }
+            });
             for (const iterator of items) {
                 this.items.push(iterator);
             }

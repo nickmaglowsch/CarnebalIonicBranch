@@ -29,7 +29,7 @@ export class LoginPage {
             this.auth.login(this.cpf, this.senha)
                 .subscribe(data => {
                     if (data !== 0) {
-                        if (data[0].primeiroLogin != 1) {
+                        if (data[0].primeiroAcesso != 1) {
                             this.navCtrl.setRoot('MenulateralPage');
                         } else {
                             this.navCtrl.setRoot('FirstLoginPage');

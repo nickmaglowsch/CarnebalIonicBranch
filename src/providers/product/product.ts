@@ -34,7 +34,6 @@ export class ProductProvider {
     }
 
     addProduct(items) {
-
         return Observable.create(
             observer => {
                 this.http.post(MyApp.URL + 'addItems.php', items).subscribe(
