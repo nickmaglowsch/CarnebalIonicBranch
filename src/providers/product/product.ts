@@ -33,6 +33,10 @@ export class ProductProvider {
         return this.produtos;
     }
 
+    getAllProducts(){
+        return this.AllProducts;
+    }
+
     addProduct(items) {
         return Observable.create(
             observer => {
